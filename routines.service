@@ -1,0 +1,14 @@
+[Unit]
+Description=Mostrador via leds quantos pods estão rodando dentro do nó de determinado deployment.
+After=network.target
+
+[Service]
+Type=simple
+User=cluster-m1
+Group=cluster-m1
+ExecStart=/usr/bin/python3 /home/cluster-m1/pfe-routines-code/routines.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
