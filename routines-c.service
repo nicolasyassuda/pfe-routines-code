@@ -1,11 +1,11 @@
 [Unit]
-Description= Rotinas do Motor para Lineariazação do DNA.
+Description=Rotinas do Motor para Lineariazação do DNA.
 After=network.target
 
 [Service]
 Type=simple
-User=sensor
-Group=sesor
+User=root
+Group=root  # Alterado para root também
 ExecStart=/home/sensor/pfe-routines-code/motor
 Restart=always
 RestartSec=10
