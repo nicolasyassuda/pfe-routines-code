@@ -16,7 +16,7 @@
 #define BUTTON_PIN 21    // Botão
 
 // Frequência desejada para o motor: 12kHz
-#define FREQUENCIA_KHZ 12
+#define FREQUENCIA_KHZ 14
 
 // Endereço I2C do display OLED (SSD1306)
 #define OLED_ADDR 0x3C
@@ -61,11 +61,11 @@ void rotina_referenciamento(int fd) {
     const char *lines[] = {"Rotina referenciamento", "iniciado"};
     define_text_in_oled(fd, lines, 2);
     gpioWrite(DIR_PIN, 0);  // Direção referenciamento
-
     gpioSetPWMfrequency(STEP_PIN, FREQUENCIA_KHZ*1000);
     gpioPWM(STEP_PIN, 500);
 
     while (gpioRead(CURSO_FINAL_PIN)) {
+      
     }
 
     gpioWrite(DIR_PIN, 1);  // Muda direção
@@ -114,6 +114,8 @@ void rotina_subida(int fd) {
 int main(void) {
     double meio_periodo_us = (1.0 / (FREQUENCIA_KHZ * 1000.0)) / 2.0 * 1000000.0;
     printf("Meio período: %.4f µs\n", meio_periodo_us);
+
+
     sleep_time = (int)(meio_periodo_us + 0.5);
     if (gpioInitialise() < 0) {
         fprintf(stderr, "Erro ao inicializar pigpio\n");
@@ -134,7 +136,6 @@ int main(void) {
     gpioWrite(ENABLE_PIN, 0);    // Habilita driver
     gpioWrite(RELAY_PIN, 1);     // Inicialmente desligado
     gpioSetPWMrange(STEP_PIN, 1000);
-
     // Inicialização do display OLED
     int oled_fd = open("/dev/i2c-1", O_RDWR);
     if (oled_fd < 0) {
